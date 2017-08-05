@@ -1,0 +1,5 @@
+{
+  "name": "spotify-history-downloader",
+  "version": "0.0.0",
+  "main": "history.js"
+}
