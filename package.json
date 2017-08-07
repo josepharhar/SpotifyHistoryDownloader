@@ -1,7 +1,6 @@
 {
   "name": "spotify-history-downloader",
   "version": "0.0.0",
-  "main": "history.js",
   "scripts": {
     "auth": "node auth.js"
   },
