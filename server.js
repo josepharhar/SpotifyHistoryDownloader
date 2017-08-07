@@ -2,11 +2,23 @@ const SpotifyWebApi = require('spotify-web-api-node');
 
 const secrets = require('./secrets.json');
 const authorizationCode = secrets.authorizationCode;
+const clientId = secrets.clientId;
+const clientSecret = secrets.clientSecret;
+const redirectUri = secrets.redirectUri;
+console.log('authorizationCode: ' + authorizationCode);
+console.log('clientId: ' + clientId);
+console.log('clientSecret: ' + clientSecret);
+console.log('redirectUri: ' + redirectUri);
+console.log();
+if (!(authorizationCode && clientId && clientSecret && redirectUri)) {
+  console.error('not all secrets found');
+  return;
+}
 
 var spotifyApi = new SpotifyWebApi({
-  clientId: secrets.clientId,
-  clientSecret: secrets.clientSecret,
-  redirectUri: ''
+  clientId: clientId,
+  clientSecret: clientSecret,
+  redirectUri: encodeURIComponent(redirectUri)
 });
 
 spotifyApi.authorizationCodeGrant(authorizationCode)
