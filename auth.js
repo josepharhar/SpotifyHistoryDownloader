@@ -2,18 +2,12 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-const secrets = require('./secrets.json');
+const Secrets = new require('./secrets');
+const secrets = new Secrets();
 const app = express();
 
 app.get('/auth-redirect', (req, res) => {
-  secrets.authorizationCode = req.query.code;
-  fs.writeFile(path.join(__dirname + '/secrets.json'), JSON.stringify(secrets), (err) => {
-    if (err) {
-      console.error('error writing secrets file: ' + err);
-    } else {
-      console.log('wrote auth code to secrets.json: ' + secrets.authorizationCode);
-    }
-  });
+  secrets.put('authorizationCode', req.query.code);
   res.sendFile(path.join(__dirname + '/auth-redirect.html'));
 });
 
@@ -24,7 +18,7 @@ app.get('/auth', (req, res) => {
 
   res.redirect('https://accounts.spotify.com/authorize' + 
     '?response_type=code' +
-    '&client_id=' + secrets.clientId +
+    '&client_id=' + secrets.get('clientId') +
     (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
     '&redirect_uri=' + encodeURIComponent(redirect_uri));
 });

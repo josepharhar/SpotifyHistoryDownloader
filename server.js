@@ -15,7 +15,7 @@ if (!(authorizationCode && clientId && clientSecret && redirectUri)) {
   return;
 }
 
-var spotifyApi = new SpotifyWebApi({
+const spotifyApi = new SpotifyWebApi({
   clientId: clientId,
   clientSecret: clientSecret,
   redirectUri: redirectUri
@@ -23,8 +23,14 @@ var spotifyApi = new SpotifyWebApi({
 
 spotifyApi.authorizationCodeGrant(authorizationCode)
   .then(function(data) {
-    console.log('Retrieved access token', data.body['access_token']);
-    spotifyApi.setAccessToken(data.body['access_token']);
+    const accessToken = data.body['access_token'];
+    const refreshToken = data.body['refresh_token'];
+    const expiresIn = data.body['expires_in']; // in seconds
+
+    console.log('access_token: ' + accessToken);
+    console.log('refresh_token: ' + refreshToken);
+    console.log('expires_in: ' + expiresIn);
+    spotifyApi.setAccessToken(accessToken);
 
     return spotifyApi.getMe();
     // return spotifyApi.getMyRecentlyPlayedTracks();
@@ -36,5 +42,5 @@ spotifyApi.authorizationCodeGrant(authorizationCode)
     console.log('This user has a ' + data.body.product + ' account');
   })
   .catch(function(err) {
-    console.log('Something went wrong', JSON.stringify(err));
+    console.log('error: ' + JSON.stringify(err));
   });
