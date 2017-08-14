@@ -18,7 +18,7 @@ if (!(authorizationCode && clientId && clientSecret && redirectUri)) {
 var spotifyApi = new SpotifyWebApi({
   clientId: clientId,
   clientSecret: clientSecret,
-  redirectUri: encodeURIComponent(redirectUri)
+  redirectUri: redirectUri
 });
 
 spotifyApi.authorizationCodeGrant(authorizationCode)
@@ -36,5 +36,5 @@ spotifyApi.authorizationCodeGrant(authorizationCode)
     console.log('This user has a ' + data.body.product + ' account');
   })
   .catch(function(err) {
-    console.log('Something went wrong', err.message);
+    console.log('Something went wrong', JSON.stringify(err));
   });
